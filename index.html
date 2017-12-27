@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oyun</title>
+</head>
+<script src="jquery-3.1.1.min.js"></script>
+<style>
+	table{
+		border-collapse:collapse;
+	}
+	td{
+		border:1px solid gray;
+		width:30px;
+		height:30px;
+	}
+</style>
+<body>
+    <div class="box">
+		<table>
+			<tr>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+			<tr>
+				<td></td><td></td><td></td><td></td><td></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
+<script>
+	//常量，阶数为5
+	var MATRIX = 5;
+	//默认颜色
+	var DEFAULT_COLOR = "red";
+	
+	var Point = function(x,y){
+		this.x = x;
+		this.y = y;
+		this.nth = (this.y*MATRIX) + this.x;
+		return this;
+	}
+	Point.prototype = {
+		constructor : Point,
+		// 找到某个并返回
+		pick : function(){
+			var nth = this.y*MATRIX + this.x;
+			return $("table tr td").eq(nth);
+		},
+		// 找到自身左右上下邻居
+		left : function(){
+			if(this.x > 0){
+				return new Point(this.x-1,this.y);
+				//return this.pick(this.x-1,this.y);
+			}
+		},
+		up : function(){
+			if(this.y > 0){
+				return new Point(this.x,this.y-1);
+				//return this.pick(this.x,this.y-1);
+			}
+		},
+		right : function(){
+			if(this.x < MATRIX){
+				return new Point(this.x+1,this.y);
+				//return this.pick(this.x+1,this.y);
+			}
+		},
+		down : function(){
+			if(this.y < MATRIX){
+				return new Point(this.x,this.y+1);
+				//return this.pick(this.x,this.y+1);
+			}
+		},
+		// 给色
+		colour : function(color){
+			var c = color?color:DEFAULT_COLOR;
+			this.pick().css("background-color",c);
+		},
+		unColour : function(){
+			this.pick().css("background-color","");
+		},
+		// 移动		
+		moveL : function(){
+			this.copy(this.left(),this);
+		},
+		moveR : function(){
+			this.copy(this.right(),this);
+		},
+		moveU : function(){
+			this.copy(this.up(),this);
+		},
+		moveD : function(){
+			this.copy(this.down(),this);
+		},
+		// 对象复制
+		copy : function(p, c) {
+	　　　	var c = c || {};
+		　　c.x = p.x;
+			c.y = p.y;
+			c.nth = p.nth;
+　　　　	return c;
+		},
+	
+	}
+	
+	var p1 = new Point(3,3);
+	console.log(p1,p1.pick(),p1.up(),p1.down(),p1.right(),p1.left());
+	p1.colour();
+	p1.up().colour("blue");
+	p1.unColour();
+	
+	p1.moveL();
+	p1.colour("yellow");
+	
+	
+	
+	
+</script>
