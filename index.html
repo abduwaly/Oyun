@@ -83,33 +83,37 @@
 		},
 		// 给色
 		colour : function(color){
-			var c = color?color:DEFAULT_COLOR;
-			this.pick().css("background-color",c);
+			//var c = color?color:DEFAULT_COLOR;
+			var color = color || DEFAULT_COLOR;
+			this.pick().css("background-color",color);
 		},
 		unColour : function(){
 			this.pick().css("background-color","");
 		},
 		// 移动		
 		moveL : function(){
-			this.copy(this.left(),this);
+			this.copyTo(this.left(),this);
 		},
 		moveR : function(){
-			this.copy(this.right(),this);
+			this.copyTo(this.right(),this);
 		},
 		moveU : function(){
-			this.copy(this.up(),this);
+			this.copyTo(this.up(),this);
 		},
 		moveD : function(){
-			this.copy(this.down(),this);
+			this.copyTo(this.down(),this);
 		},
-		// 对象复制
-		copy : function(p, c) {
-	　　　	var c = c || {};
-		　　c.x = p.x;
-			c.y = p.y;
-			c.nth = p.nth;
-　　　　	return c;
+		// 对象复制 (除去原型属性)
+		copyTo : function(s,c){
+			var c = c || {};
+			for(var prop in s){
+				if(s.hasOwnProperty(prop)){
+					c[prop] = s[prop];
+				}
+			}
+			return c;
 		},
+		
 	
 	}
 	
